@@ -36,8 +36,9 @@ export default function LoginPage() {
 			className="flex justify-center h-screen items-center bg-cover bg-center sm:bg-left"
 			style={{backgroundImage: `url(${randomSlide.image})`}}
 		>
-			<div className="min-w-sm p-6 rounded-lg bg-white filter drop-shadow-2xl">
-				<h3 className="text-2xl font-bold text-center mb-6">Login to your account</h3>
+			<div className="min-w-sm p-8 rounded-2xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur-sm border border-gray-200/50 dark:border-zinc-700/50 shadow-2xl dark:shadow-zinc-900/50">
+				<h3 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-white">Welcome Back</h3>
+				<p className="text-center text-gray-600 dark:text-zinc-400 mb-6">Sign in to your account</p>
 				<LoginForm onSubmit={handleLogin} />
 			</div>
 		</main>

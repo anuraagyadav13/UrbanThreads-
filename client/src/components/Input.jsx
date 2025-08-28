@@ -6,9 +6,11 @@ export default function Input({ icon, className, ...props}) {
 		<input 
 			type="text" 
 			className={clsx(
-				"w-full min-w-56 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2", 
-				"dark:(bg-zinc-800 border-zinc-600 text-zinc-100)",
-				"focus:(outline-none ring ring-gray-300)",
+				"w-full min-w-56 bg-gray-50/80 border border-gray-300/60 text-gray-900 rounded-xl p-3", 
+				"dark:(bg-zinc-800/50 border-zinc-600/50 text-zinc-100)",
+				"focus:(outline-none ring-2 ring-blue-500/50 border-blue-500/50)",
+				"dark:focus:(ring-blue-400/50 border-blue-400/50)",
+				"transition-all duration-200",
 				icon && "pl-10",
 				props.disabled && "!text-gray-600 !bg-gray-200",
 				className,
