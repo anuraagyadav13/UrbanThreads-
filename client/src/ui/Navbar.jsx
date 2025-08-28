@@ -20,19 +20,19 @@ export default function Navbar() {
 		<nav className={clsx(
 			"w-full flex flex-wrap justify-between items-center",
 			"sticky top-0 z-40 py-3 px-4",
-			"bg-white/95 dark:bg-slate-950/95",
-			"border-b border-gray-200/60 dark:border-slate-800/60",
+			"bg-white/95 dark:bg-gray-900/95",
+			"border-b border-gray-200/60 dark:border-gray-700/60",
 			"backdrop-blur-xl shadow-sm",
 			"md:(py-1)"
 		)} ref={navbarRef}>
 			<div className="flex justify-between items-center md:mx-0">
 				<Link to="/">
-					<h3 className="font-display font-semibold text-3xl text-slate-900 dark:text-white hover:text-slate-700 dark:hover:text-slate-200 transition-colors duration-200">Urban Threads</h3>
+					<h3 className="font-display font-semibold text-3xl text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-white transition-colors duration-200">Urban Threads</h3>
 				</Link>
 			</div>
 
 			<div className="flex items-center ml-2 space-x-4 md:order-2">
-				<Link to="/cart" className="relative flex items-center pr-2 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors duration-200">
+				<Link to="/cart" className="relative flex items-center pr-2 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors duration-200">
 					<ShoppingCart width={24} height={24} />
 					{cart.products.length ?
 						<div className='absolute flex justify-center items-center w-5 h-5 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-full -top-1 -right-1 text-xs font-medium shadow-lg'>
@@ -113,7 +113,7 @@ function NavLink({ children, to }) {
 		<li className="relative group">
 			<Link 
 				to={to} 
-				className="text-slate-700 hover:text-slate-900 dark:(text-slate-200 hover:text-white) px-4 py-2 rounded-lg transition-all duration-200 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-medium"
+				className="text-gray-700 hover:text-gray-900 dark:text-gray-200 dark:hover:text-white px-4 py-2 rounded-lg transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700/50 font-medium"
 			>
 				{children}
 			</Link>
@@ -126,7 +126,7 @@ function ThemeToggle() {
     return (
         <button
             aria-label="Toggle dark mode"
-            className="flex items-center justify-center w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 dark:(bg-slate-800 hover:bg-slate-700) border border-slate-200 dark:border-slate-700 transition-all duration-200 shadow-sm hover:shadow-md"
+            className="flex items-center justify-center w-10 h-10 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 transition-all duration-200 shadow-sm hover:shadow-md text-gray-700 dark:text-gray-200"
             onClick={() => {
                 const next = !document.documentElement.classList.contains('dark')
                 document.documentElement.classList.toggle('dark', next)
