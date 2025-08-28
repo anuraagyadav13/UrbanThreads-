@@ -20,22 +20,22 @@ export default function Navbar() {
 		<nav className={clsx(
 			"w-full flex flex-wrap justify-between items-center",
 			"sticky top-0 z-40 py-3 px-4",
-			"bg-white/90 border-b border-gray-200",
-			"dark:(bg-black/90 border-zinc-800)",
-			"backdrop-filter backdrop-blur-lg shadow-sm",
+			"bg-white/95 dark:bg-slate-950/95",
+			"border-b border-gray-200/60 dark:border-slate-800/60",
+			"backdrop-blur-xl shadow-sm",
 			"md:(py-1)"
 		)} ref={navbarRef}>
 			<div className="flex justify-between items-center md:mx-0">
 				<Link to="/">
-					<h3 className="text-medium text-2xl">Urban Threads</h3>
+					<h3 className="font-display font-semibold text-3xl text-slate-900 dark:text-white hover:text-slate-700 dark:hover:text-slate-200 transition-colors duration-200">Urban Threads</h3>
 				</Link>
 			</div>
 
 			<div className="flex items-center ml-2 space-x-4 md:order-2">
-				<Link to="/cart" className="relative flex items-center pr-2">
+				<Link to="/cart" className="relative flex items-center pr-2 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors duration-200">
 					<ShoppingCart width={24} height={24} />
 					{cart.products.length ?
-						<div className='absolute flex justify-center items-center w-4 h-4 bg-red-500 text-white rounded-full top-0 right-0 text-xs'>
+						<div className='absolute flex justify-center items-center w-5 h-5 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-full -top-1 -right-1 text-xs font-medium shadow-lg'>
 							{cart.products.length}
 						</div>
 						: null
@@ -67,8 +67,8 @@ export default function Navbar() {
 			)}>
 				<ul className={clsx(
 					"flex flex-col items-center order-2",
-					"mt-8 mb-2 text-xl space-y-1 divide-y-2 divide-gray-200",
-					"md:(flex-row text-base m-0 space-y-0 divide-y-0 divide-x)"
+					"mt-8 mb-2 text-lg space-y-2 font-medium",
+					"md:(flex-row text-base m-0 space-y-0 space-x-8)"
 				)} onClick={() => setShowMenu(false)}>
 					<NavLink to="/products?category=men">Men</NavLink>
 					<NavLink to="/products?category=women">Women</NavLink>
@@ -110,8 +110,13 @@ export default function Navbar() {
 
 function NavLink({ children, to }) {
 	return (
-		<li className="hover:text-gray-800 text-gray-700 dark:(text-zinc-200 hover:text-white) block px-4 py-2 truncate">
-			<Link to={to}>{children}</Link>
+		<li className="relative group">
+			<Link 
+				to={to} 
+				className="text-slate-700 hover:text-slate-900 dark:(text-slate-200 hover:text-white) px-4 py-2 rounded-lg transition-all duration-200 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-medium"
+			>
+				{children}
+			</Link>
 		</li>
 	)
 }
@@ -121,7 +126,7 @@ function ThemeToggle() {
     return (
         <button
             aria-label="Toggle dark mode"
-            className="flex items-center justify-center w-9 h-9 rounded-full border border-gray-300 hover:(bg-gray-200) dark:(border-zinc-600 hover:bg-zinc-800)"
+            className="flex items-center justify-center w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 dark:(bg-slate-800 hover:bg-slate-700) border border-slate-200 dark:border-slate-700 transition-all duration-200 shadow-sm hover:shadow-md"
             onClick={() => {
                 const next = !document.documentElement.classList.contains('dark')
                 document.documentElement.classList.toggle('dark', next)

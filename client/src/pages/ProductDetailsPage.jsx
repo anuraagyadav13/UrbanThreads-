@@ -39,38 +39,54 @@ export default function ProductDetailsPage() {
 	if (!product) return <Loader /> 
 
 	return (
-		<main className="relative mb-20">
-			<div className="grid grid-cols-1 md:grid-cols-2 py-8 px-4">
-				<section className="flex items-center max-h-2xl overflow-hidden my-10 sm:mx-0">
-					<img 
-						className="object-cover"
-						src={product.image} 
-					/>
-				</section>
-				<section className="flex flex-col justify-center space-y-6 text-gray-600">
-					<h2 className="text-4xl text-gray-800">{product.title}</h2>
-					<p className="text-xl">{product.description}</p>
-					<span className="text-2xl font-medium">${product.price}</span>
-					{cart.products.some(p => p.id === id) ? (
-						<Link to="/cart">
-							<Button link className="sm:max-w-xs text-base">
-								<Check className="mr-2" />
-								<span>Added to Cart</span>
+		<main className="relative mb-20 min-h-screen">
+			<div className="container mx-auto px-6 py-12">
+				<div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+					<section className="relative group">
+						<div className="aspect-square rounded-3xl overflow-hidden bg-slate-100 dark:bg-slate-800 shadow-2xl">
+							<img 
+								className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+								src={product.image} 
+								alt={product.title}
+							/>
+						</div>
+					</section>
+					<section className="space-y-8">
+						<div className="space-y-4">
+							<h1 className="font-display text-5xl lg:text-6xl font-bold bg-gradient-to-r from-slate-900 to-slate-600 dark:(from-white to-slate-300) bg-clip-text text-transparent leading-tight">{product.title}</h1>
+							<p className="text-xl text-slate-600 dark:text-slate-400 leading-relaxed max-w-lg">{product.description}</p>
+						</div>
+						<div className="flex items-center space-x-4">
+							<span className="text-4xl font-bold text-slate-900 dark:text-white">${product.price}</span>
+							<span className="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm font-medium">In Stock</span>
+						</div>
+						<div className="flex flex-col sm:flex-row gap-4">
+							{cart.products.some(p => p.id === id) ? (
+								<Link to="/cart" className="flex-1">
+									<Button className="w-full py-4 text-lg bg-green-600 hover:bg-green-700 dark:(bg-green-500 hover:bg-green-600)">
+										<Check className="mr-3" size={20} />
+										<span>View in Cart</span>
+									</Button>
+								</Link>
+							) : (
+								<Button className="flex-1 py-4 text-lg" onClick={addToCart}>
+									<ShoppingCart className="mr-3" size={20} />
+									<span>Add to Cart</span>
+								</Button>
+							)}
+							<Button light className="px-8 py-4 text-lg">
+								♡ Save
 							</Button>
-						</Link>
-					) : (
-						<Button className="sm:max-w-xs text-base" onClick={addToCart}>
-							<ShoppingCart className="opacity-80 mr-4" />
-							<span>Add to Cart</span>
-						</Button>
-					)}
-				</section>
+						</div>
+					</section>
+				</div>
 			</div>
 			<Button 
 				onClick={() => navigate(-1)}
-				className="absolute top-0 text-lg" 
-				secondary
-			><ChevronLeft className="mr-2" /> Back
+				className="fixed top-24 left-6 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border border-slate-200 dark:border-slate-700 shadow-lg hover:shadow-xl" 
+				light
+			>
+				<ChevronLeft className="mr-2" size={18} /> Back
 			</Button>
 		</main>
 	)

@@ -4,11 +4,11 @@ import PageHeader from "./PageHeader"
 
 export default function Container({ heading, children, type="section" }) {
 	return (
-		<section className="my-14 container mx-auto">
+		<section className="my-20 container mx-auto px-4">
 			<PageHeader h2={type !== "page"}>
 				{heading}
 			</PageHeader>
-			<hr className="h-px w-1/2 mx-auto bg-gray-300 dark:bg-zinc-600 mt-3 mb-8" />
+			<div className="w-24 h-1 bg-gradient-to-r from-slate-400 to-slate-600 dark:(from-slate-500 to-slate-300) mx-auto mt-4 mb-12 rounded-full" />
 			{children}
 		</section>
 	)

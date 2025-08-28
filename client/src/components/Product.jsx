@@ -10,15 +10,15 @@ export default function Product({ link, imgSrc, price, onAddToCart, isInCart }) 
 		<Card 
 			imgSrc={imgSrc} 
 			className={clsx(
-				"!max-w-72 !max-h-xs",
-				"rounded-lg m-2",
+				"!max-w-80 !max-h-96",
+				"rounded-2xl m-3",
 			)}
 		>
 			<div className={clsx(
       	"absolute inset-0 text-black text-center",
       	"flex flex-col justify-center items-center",
-      	"opacity-0 transition ease-out",
-      	"group-hover:(opacity-100 bg-black/20)"
+      	"opacity-0 transition-all duration-300 ease-out",
+      	"group-hover:(opacity-100 bg-black/30 backdrop-blur-sm)"
     	)}>
     			{isInCart ? (
 						<Link to="/cart">
@@ -50,7 +50,7 @@ export default function Product({ link, imgSrc, price, onAddToCart, isInCart }) 
 
 function ProductButton({ children, className, ...props }) {
 	return (
-		<button className={`m-6 bg-white w-12 h-12 flex justify-center items-center rounded-full transition-all duration-300 ease-out hover:(px-14) focus:outline-none ${className}`} {...props}>
+		<button className={`m-4 bg-white/90 hover:bg-white w-14 h-14 flex justify-center items-center rounded-full transition-all duration-300 ease-out hover:(scale-110 shadow-xl) focus:outline-none ${className}`} {...props}>
 			{children}
 		</button>
 	)

@@ -6,17 +6,18 @@ import Button from "@/components/Button"
 
 export default function Newsletter() {
 	return (
-		<div className="max-w-2xl m-4 sm:mx-auto rounded-md text-center border-2 border-gray-600 p-4 bg-gradient-to-r from-violet-50 to-indigo-50">
-			<h2 className="text-4xl font-medium mb-3"> Newsletter</h2>
-			<p className="text-xl text-gray-500">Subscribe to our weekly newsletter and get timely updates for your favorite products.</p>
-			<form className="max-w-xl flex mx-auto mt-8 mb-4">
+		<div className="max-w-3xl m-4 sm:mx-auto rounded-3xl text-center border border-slate-200 dark:border-slate-700 p-12 bg-gradient-to-br from-blue-50 to-indigo-100 dark:(from-slate-900 to-slate-800) shadow-2xl">
+			<h2 className="font-display text-5xl font-bold mb-4 bg-gradient-to-r from-slate-900 to-slate-600 dark:(from-white to-slate-300) bg-clip-text text-transparent">Stay Updated</h2>
+			<p className="text-lg text-slate-600 dark:text-slate-400 mb-8 max-w-lg mx-auto leading-relaxed">Subscribe to our newsletter and be the first to know about new collections, exclusive offers, and fashion trends.</p>
+			<form className="max-w-md flex flex-col sm:flex-row gap-4 mx-auto">
 				<Input
 					icon={<Mail />}
 					type="email" 
-					placeholder="Your Email" 
+					placeholder="Enter your email" 
+					className="flex-1"
 					required
 				/>
-				<Button type="submit">Subscribe</Button>
+				<Button type="submit" className="sm:w-auto w-full">Subscribe</Button>
 			</form>
 		</div>
 	)
