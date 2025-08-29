@@ -27,14 +27,34 @@ export default function ProductsPage() {
   const dropDownRef = useClickOutside(() => setShowSortOptions(false))
 
   const category = query.get("category")
+  const [categoryName, setCategoryName] = useState("")
 
   useEffect(() => {
     (async () => {
-      const resp = await api.fetchProducts(category)
-      if (Array.isArray(resp)) {
-        setProducts(resp)
-      } else if (resp.status !== "error") {
-        setProducts(resp)
+      if (category) {
+        // Format the category name for display (capitalize first letter of each word)
+        const formattedCategory = category
+          .split(' ')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ')
+        setCategoryName(formattedCategory)
+        
+        // Fetch products with the category filter
+        const resp = await api.fetchProducts(category)
+        if (Array.isArray(resp)) {
+          setProducts(resp)
+        } else if (resp.status !== "error") {
+          setProducts(resp)
+        }
+      } else {
+        // If no category is specified, fetch all products
+        const resp = await api.fetchProducts()
+        if (Array.isArray(resp)) {
+          setProducts(resp)
+        } else if (resp.status !== "error") {
+          setProducts(resp)
+        }
+        setCategoryName("")
       }
     })()
   }, [category])
@@ -71,7 +91,7 @@ export default function ProductsPage() {
   return (
     <main>
       <Container
-        heading={`Products${category ? " for: " + category : ""}`}
+        heading={categoryName ? `Category: ${categoryName}` : "All Products"}
         type="page"
       >
         <section className="flex justify-end">

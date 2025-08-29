@@ -146,10 +146,20 @@ async function fetchUserDetails() {
 }
 
 async function fetchProducts(category, newArrivals=false) {
-  let query = `new=${newArrivals ? "true" : "false"}${category ? "&category="+category : ""}`
-  const resp = await fetch(API_URL+"/products?"+query)
+  const params = new URLSearchParams()
+  if (newArrivals) params.append('new', 'true')
+  if (category) params.append('category', category)
+  
+  const queryString = params.toString()
+  const url = queryString ? `${API_URL}/products?${queryString}` : `${API_URL}/products`
+  
+  const resp = await fetch(url)
+  if (!resp.ok) {
+    throw new Error(`HTTP error! status: ${resp.status}`)
+  }
   return await resp.json()
 }
+
 async function fetchProduct(id) {
   const resp = await fetch(API_URL+"/products/"+id)
   return await resp.json()

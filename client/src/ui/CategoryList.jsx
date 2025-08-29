@@ -1,5 +1,4 @@
 import React from 'react'
-
 import Category from "@/components/Category"
 
 export default function CategoryList({ categories }) {
@@ -10,7 +9,7 @@ export default function CategoryList({ categories }) {
 					key={category.id}
 					imgSrc={category.image}
 					title={category.title}
-					link="#"
+					link={`/products?category=${encodeURIComponent(category.title.toLowerCase())}`}
 				/>
 			))}
 		</div>

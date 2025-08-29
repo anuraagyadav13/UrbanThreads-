@@ -16,18 +16,19 @@ router.get("/",
 	async (req, res) => {
 	const query = req.query
 	try {
-		let products 
-		if (query.new) {
-			products = await Product.find().sort({ createdAt: -1 }).limit(5)
+		let productsQuery = Product.find()
 
-		} else if (query.category) {
-			products = await Product.find({
-				categories: { $in: [query.category]}
-			})
-
-		} else {
-			products = await Product.find()
+		// Handle category filter if present
+		if (query.category) {
+			productsQuery = productsQuery.where('categories').in([query.category])
 		}
+
+		// Handle new arrivals if requested
+		if (query.new === 'true') {
+			productsQuery = productsQuery.sort({ createdAt: -1 }).limit(5)
+		}
+
+		const products = await productsQuery.exec()
 		return res.json(products)
 
 	} catch (err) {
