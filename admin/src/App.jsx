@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import 'bootstrap/dist/css/bootstrap.min.css'
+import 'virtual:windi.css'
 import Login from './components/Login'
 import Dashboard from './components/Dashboard'
 import api from './api'
@@ -28,10 +28,8 @@ function App() {
 
   if (loading) {
     return (
-      <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
+      <div className="flex justify-center items-center min-h-screen bg-gray-50 dark:bg-zinc-900">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-900 dark:border-white"></div>
       </div>
     )
   }

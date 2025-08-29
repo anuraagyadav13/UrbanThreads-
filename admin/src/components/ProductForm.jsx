@@ -1,36 +1,33 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Button, Row, Col, Alert } from 'react-bootstrap'
+import Button from './Button'
+import Input from './Input'
 import api from '../api'
 
 export default function ProductForm({ product, onSuccess, onCancel }) {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    image: '',
     price: '',
-    inStock: true,
+    image: '',
     categories: [],
-    size: [],
-    color: []
+    sizes: [],
+    colors: [],
+    inStock: true
   })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-
-  const categoryOptions = ['men', 'women', 'unisex']
-  const sizeOptions = ['XS', 'S', 'M', 'L', 'XL', '24', '26', '28', '30', '32', '34', '36', '7', '8', '9', '10', '11']
-  const colorOptions = ['black', 'white', 'navy', 'brown', 'gray', 'blue', 'indigo', 'yellow', 'red', 'green', 'pink', 'cream', 'beige', 'khaki', 'olive', 'dark', 'light']
 
   useEffect(() => {
     if (product) {
       setFormData({
         title: product.title || '',
         description: product.description || '',
-        image: product.image || '',
         price: product.price || '',
-        inStock: product.inStock !== undefined ? product.inStock : true,
+        image: product.image || '',
         categories: product.categories || [],
-        size: product.size || [],
-        color: product.color || []
+        sizes: product.sizes || [],
+        colors: product.colors || [],
+        inStock: product.inStock !== undefined ? product.inStock : true
       })
     }
   }, [product])
@@ -43,12 +40,11 @@ export default function ProductForm({ product, onSuccess, onCancel }) {
     }))
   }
 
-  const handleArrayChange = (field, value) => {
+  const handleArrayChange = (name, value) => {
+    const array = value.split(',').map(item => item.trim()).filter(item => item)
     setFormData(prev => ({
       ...prev,
-      [field]: prev[field].includes(value)
-        ? prev[field].filter(item => item !== value)
-        : [...prev[field], value]
+      [name]: array
     }))
   }
 
@@ -58,14 +54,17 @@ export default function ProductForm({ product, onSuccess, onCancel }) {
     setError('')
 
     try {
-      const productData = {
+      const submitData = {
         ...formData,
         price: parseFloat(formData.price)
       }
 
-      const result = product 
-        ? await api.updateProduct(product._id, productData)
-        : await api.createProduct(productData)
+      let result
+      if (product) {
+        result = await api.updateProduct(product._id, submitData)
+      } else {
+        result = await api.createProduct(submitData)
+      }
 
       if (result.status === 'ok') {
         onSuccess()
@@ -80,136 +79,196 @@ export default function ProductForm({ product, onSuccess, onCancel }) {
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
-      {error && <Alert variant="danger">{error}</Alert>}
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {error && (
+        <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
+          <p className="text-red-700 dark:text-red-400 text-sm">{error}</p>
+        </div>
+      )}
       
-      <Row>
-        <Col md={6}>
-          <Form.Group className="mb-3">
-            <Form.Label>Product Title *</Form.Label>
-            <Form.Control
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
-        </Col>
-        <Col md={6}>
-          <Form.Group className="mb-3">
-            <Form.Label>Price (₹) *</Form.Label>
-            <Form.Control
-              type="number"
-              step="0.01"
-              name="price"
-              value={formData.price}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
-        </Col>
-      </Row>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
+            Product Title
+          </label>
+          <Input
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            required
+            className="w-full"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
+            Price (₹)
+          </label>
+          <Input
+            type="number"
+            name="price"
+            value={formData.price}
+            onChange={handleChange}
+            step="0.01"
+            min="0"
+            required
+            className="w-full"
+          />
+        </div>
+      </div>
 
-      <Form.Group className="mb-3">
-        <Form.Label>Description *</Form.Label>
-        <Form.Control
-          as="textarea"
-          rows={3}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
+          Description
+        </label>
+        <textarea
           name="description"
           value={formData.description}
           onChange={handleChange}
+          rows={4}
           required
+          className="w-full px-4 py-3 border border-gray-300 dark:border-zinc-600 rounded-xl focus:ring-2 focus:ring-slate-500 focus:border-transparent bg-white dark:bg-zinc-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-zinc-400 transition-colors"
+          placeholder="Enter product description..."
         />
-      </Form.Group>
+      </div>
 
-      <Form.Group className="mb-3">
-        <Form.Label>Image URL *</Form.Label>
-        <Form.Control
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-2">
+          Image URL
+        </label>
+        <Input
           type="url"
           name="image"
           value={formData.image}
           onChange={handleChange}
           required
+          className="w-full"
+          placeholder="https://example.com/image.jpg"
         />
         {formData.image && (
-          <div className="mt-2">
+          <div className="mt-4">
             <img 
               src={formData.image} 
               alt="Preview" 
-              style={{ width: '100px', height: '120px', objectFit: 'cover' }}
+              className="w-24 h-28 object-cover rounded-lg border border-gray-200 dark:border-zinc-600"
+              onError={(e) => {
+                e.target.style.display = 'none'
+              }}
             />
           </div>
         )}
-      </Form.Group>
+      </div>
 
-      <Row>
-        <Col md={4}>
-          <Form.Group className="mb-3">
-            <Form.Label>Categories *</Form.Label>
-            {categoryOptions.map(category => (
-              <Form.Check
-                key={category}
-                type="checkbox"
-                label={category.charAt(0).toUpperCase() + category.slice(1)}
-                checked={formData.categories.includes(category)}
-                onChange={() => handleArrayChange('categories', category)}
-              />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-3">
+            Categories
+          </label>
+          <div className="space-y-2">
+            {['men', 'women', 'kids', 'shirts', 'pants', 'dresses', 'shoes', 'accessories'].map(category => (
+              <label key={category} className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={formData.categories.includes(category)}
+                  onChange={(e) => {
+                    const newCategories = e.target.checked
+                      ? [...formData.categories, category]
+                      : formData.categories.filter(c => c !== category)
+                    setFormData(prev => ({ ...prev, categories: newCategories }))
+                  }}
+                  className="h-4 w-4 text-slate-600 focus:ring-slate-500 border-gray-300 rounded mr-2"
+                />
+                <span className="text-sm text-gray-700 dark:text-zinc-300 capitalize">{category}</span>
+              </label>
             ))}
-          </Form.Group>
-        </Col>
-        <Col md={4}>
-          <Form.Group className="mb-3">
-            <Form.Label>Sizes</Form.Label>
-            <div style={{ maxHeight: '150px', overflowY: 'auto' }}>
-              {sizeOptions.map(size => (
-                <Form.Check
-                  key={size}
+          </div>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-3">
+            Sizes
+          </label>
+          <div className="space-y-2">
+            {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map(size => (
+              <label key={size} className="flex items-center">
+                <input
                   type="checkbox"
-                  label={size}
-                  checked={formData.size.includes(size)}
-                  onChange={() => handleArrayChange('size', size)}
+                  checked={formData.sizes.includes(size)}
+                  onChange={(e) => {
+                    const newSizes = e.target.checked
+                      ? [...formData.sizes, size]
+                      : formData.sizes.filter(s => s !== size)
+                    setFormData(prev => ({ ...prev, sizes: newSizes }))
+                  }}
+                  className="h-4 w-4 text-slate-600 focus:ring-slate-500 border-gray-300 rounded mr-2"
                 />
-              ))}
-            </div>
-          </Form.Group>
-        </Col>
-        <Col md={4}>
-          <Form.Group className="mb-3">
-            <Form.Label>Colors</Form.Label>
-            <div style={{ maxHeight: '150px', overflowY: 'auto' }}>
-              {colorOptions.map(color => (
-                <Form.Check
-                  key={color}
+                <span className="text-sm text-gray-700 dark:text-zinc-300">{size}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-3">
+            Colors
+          </label>
+          <div className="space-y-2">
+            {['Black', 'White', 'Red', 'Blue', 'Green', 'Yellow', 'Pink', 'Purple'].map(color => (
+              <label key={color} className="flex items-center">
+                <input
                   type="checkbox"
-                  label={color.charAt(0).toUpperCase() + color.slice(1)}
-                  checked={formData.color.includes(color)}
-                  onChange={() => handleArrayChange('color', color)}
+                  checked={formData.colors.includes(color)}
+                  onChange={(e) => {
+                    const newColors = e.target.checked
+                      ? [...formData.colors, color]
+                      : formData.colors.filter(c => c !== color)
+                    setFormData(prev => ({ ...prev, colors: newColors }))
+                  }}
+                  className="h-4 w-4 text-slate-600 focus:ring-slate-500 border-gray-300 rounded mr-2"
                 />
-              ))}
-            </div>
-          </Form.Group>
-        </Col>
-      </Row>
+                <span className="text-sm text-gray-700 dark:text-zinc-300">{color}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+      </div>
 
-      <Form.Group className="mb-3">
-        <Form.Check
-          type="checkbox"
-          label="In Stock"
-          name="inStock"
-          checked={formData.inStock}
-          onChange={handleChange}
-        />
-      </Form.Group>
+      <div className="border-t border-gray-200 dark:border-zinc-700 pt-6">
+        <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-3">
+          Stock Status
+        </label>
+        <div className="space-y-2">
+          <label className="flex items-center">
+            <input
+              type="radio"
+              name="inStock"
+              value="true"
+              checked={formData.inStock === true}
+              onChange={() => setFormData(prev => ({ ...prev, inStock: true }))}
+              className="h-4 w-4 text-slate-600 focus:ring-slate-500 border-gray-300 mr-2"
+            />
+            <span className="text-sm text-gray-700 dark:text-zinc-300">In Stock</span>
+          </label>
+          <label className="flex items-center">
+            <input
+              type="radio"
+              name="inStock"
+              value="false"
+              checked={formData.inStock === false}
+              onChange={() => setFormData(prev => ({ ...prev, inStock: false }))}
+              className="h-4 w-4 text-slate-600 focus:ring-slate-500 border-gray-300 mr-2"
+            />
+            <span className="text-sm text-gray-700 dark:text-zinc-300">Out of Stock</span>
+          </label>
+        </div>
+      </div>
 
-      <div className="d-flex justify-content-end">
-        <Button variant="secondary" className="me-2" onClick={onCancel}>
-          Cancel
-        </Button>
-        <Button variant="primary" type="submit" disabled={loading}>
+      <div className="flex space-x-4 pt-4">
+        <Button type="submit" disabled={loading} className="flex-1">
           {loading ? 'Saving...' : (product ? 'Update Product' : 'Add Product')}
         </Button>
+        <Button secondary onClick={onCancel} className="flex-1">
+          Cancel
+        </Button>
       </div>
-    </Form>
+    </form>
   )
 }

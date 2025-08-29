@@ -2,7 +2,7 @@ const router = require("express").Router()
 const { celebrate } = require('celebrate')
 
 const Product = require("../models/Product.model")
-const { product: productSchema } = require('../models/schema')
+const { product: productSchema } = require('../models/schema_fixed')
 const { 
 	verifyToken,
 	verifyAuthorization,

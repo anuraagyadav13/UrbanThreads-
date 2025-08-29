@@ -23,9 +23,9 @@ const ProductSchema = new mongoose.Schema({
 		default: true,
 	},
 	categories: { type: Array },
-	size: { type: Array },
-	color: { type: Array },
-}, 
+	sizes: { type: Array },
+	colors: { type: Array },
+},  
 	{timestamps: true}
 )
 
