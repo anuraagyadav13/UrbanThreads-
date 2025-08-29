@@ -15,7 +15,7 @@ export default function CartItem({ imgSrc, name, price, quantity, setQuantity })
 					<div className="flex flex-col space-y-2 mr-2 py-2">
 						<div className="flex items-center">
 							<span className="font-bold mr-2">Price:</span> 
-							<span className="text-lg">${price}</span>
+							<span className="text-lg">₹{price}</span>
 						</div>
 						<div className="flex">
 							<span className="font-bold mr-2">Color:</span> 

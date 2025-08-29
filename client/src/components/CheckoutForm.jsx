@@ -98,7 +98,7 @@ export default function CheckoutForm({onCancel,onSuccess}) {
         {orderDetails?.amount && 
           <div className='flex justify-between text-lg mt-2'>
             <h4 className='text-lg mb-2'>Final Order</h4>
-            <span className='font-bold text-xl'>${orderDetails.amount}</span>
+            <span className='font-bold text-xl'>₹{orderDetails.amount}</span>
           </div>
         }
         {orderDetails?.products?.length ?
@@ -150,7 +150,7 @@ function CheckoutItem({title, price, quantity}) {
             {quantity}
           </span>
         }
-        <span className='text-lg font-light'>${quantity*price}</span>
+        <span className='text-lg font-light'>₹{quantity*price}</span>
       </div>
     </li>
   )

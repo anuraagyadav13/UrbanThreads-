@@ -42,7 +42,7 @@ export default function Product({ link, imgSrc, price, onAddToCart, isInCart }) 
     		"flex justify-center items-center",
     		"bg-black/50 font-bold text-white rounded-full",
     	)}>
-    		${price}
+    		₹{price}
     	</div>
 		</Card>
 	)

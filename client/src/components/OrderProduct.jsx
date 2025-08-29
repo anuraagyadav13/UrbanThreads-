@@ -9,7 +9,7 @@ export default function OrderProduct({ imgSrc, name, price, quantity }) {
 			</div>
 			<p className="font-medium m-2">{name}</p>
 			<div className="flex justify-between text-lg">
-				<span>${price}</span>
+				<span>₹{price}</span>
 				<span className="flex items-center">
 					<X width={18} height={18} />{quantity}
 				</span>

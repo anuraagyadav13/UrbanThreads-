@@ -57,7 +57,7 @@ export default function ProductDetailsPage() {
 							<p className="text-xl text-slate-600 dark:text-slate-400 leading-relaxed max-w-lg">{product.description}</p>
 						</div>
 						<div className="flex items-center space-x-4">
-							<span className="text-4xl font-bold text-slate-900 dark:text-white">${product.price}</span>
+							<span className="text-4xl font-bold text-slate-900 dark:text-white">₹{product.price}</span>
 							<span className="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm font-medium">In Stock</span>
 						</div>
 						<div className="flex flex-col sm:flex-row gap-4">

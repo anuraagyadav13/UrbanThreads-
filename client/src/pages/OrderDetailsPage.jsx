@@ -65,7 +65,7 @@ export default function OrderDetailsPage() {
 					</div>
 					<div className="text-center space-y-2">
 						<h3 className="text-xl mt-10">Total Amount:</h3>
-						<p className="text-2xl font-light">${order.amount}</p>
+						<p className="text-2xl font-light">₹{order.amount}</p>
 					</div>
 				</OrderDetailsSection>
 			</Container>

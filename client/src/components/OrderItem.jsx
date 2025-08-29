@@ -23,7 +23,7 @@ export default function OrderItem({ products, status, amount }) {
 					</div>
 				</div>
 				<div>
-					<span className="text-2xl">${amount}</span>
+					<span className="text-2xl">₹{amount}</span>
 				</div>
 			</section>
 		</div>
