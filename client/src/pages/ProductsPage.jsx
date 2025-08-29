@@ -31,7 +31,9 @@ export default function ProductsPage() {
   useEffect(() => {
     (async () => {
       const resp = await api.fetchProducts(category)
-      if (resp.status != "error") {
+      if (Array.isArray(resp)) {
+        setProducts(resp)
+      } else if (resp.status !== "error") {
         setProducts(resp)
       }
     })()
@@ -42,7 +44,8 @@ export default function ProductsPage() {
   const sortProducts = (sortType) => {
     switch (sortType) {
       case 1:
-        setProducts([...products].sort((a, b) => a.updatedAt - b.updatedAt))
+        setProducts([...products].sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)))
+        break
       case 2: 
         setProducts([...products].sort((a, b) => a.price - b.price))
         break

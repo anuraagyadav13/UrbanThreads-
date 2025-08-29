@@ -11,6 +11,7 @@ export default function ProductList({ products, onAddToCart }) {
 			{products.map(product => (
 				<Product
 					key={product._id}
+					title={product.title}
 					imgSrc={product.image}
 					price={product.price}
 					link={`/products/${product._id}`}
