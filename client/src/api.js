@@ -137,7 +137,8 @@ async function fetchUserDetails() {
   const {status, user} = await resp.json()
   if (status == "ok") {
     if (!user.avatarSrc) {
-      user.avatarSrc = `https://avatars.dicebear.com/api/initials/${user.fullname}.svg`
+      // Using DiceBear API v7 with the new domain
+      user.avatarSrc = `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.fullname)}`
     }
     setUser(user)
   }
