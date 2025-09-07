@@ -1,6 +1,5 @@
 # Urban Thread
 
-"C:\Users\anute\Videos\Screen Recordings\Screen Recording 2025-09-07 173321.mp4"
 ---
 ## Front-end
 - [React](https://es.reactjs.org/) - Front-End JavaScript library
