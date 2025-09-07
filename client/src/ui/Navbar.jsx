@@ -89,7 +89,7 @@ export default function Navbar() {
 				)}>
 					<li>
 						<Link to="/login">
-							<Button secondary className="w-full md:w-auto">
+							<Button className="w-full md:w-auto bg-gradient-to-r from-white-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-md hover:shadow-lg transition-all duration-200">
 								<LogIn width={20} height={20} className="mr-2" />Login
 							</Button>
 						</Link>
