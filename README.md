@@ -1,4 +1,4 @@
-# Fashion-Store
+# Urban Thread
 
 https://user-images.githubusercontent.com/30614282/161916675-86fb41ce-75cf-40f2-8c6e-db35ac1f059e.mp4
 
@@ -17,25 +17,5 @@ https://user-images.githubusercontent.com/30614282/161916675-86fb41ce-75cf-40f2-
 - [celebrate](https://github.com/arb/celebrate) - A joi validation middleware for Express.
 - [JsonWebToken](https://github.com/auth0/node-jsonwebtoken) - An implementation of JSON Web Tokens for Node.js
 
-## Database
-- [Monogodb](https://www.mongodb.com/) - Cross-platform document-oriented NoSQL database.
 
----
-## Run yourself
-> Make sure you have [mongodb](https://www.mongodb.com/try/download/community) & [nodejs](https://nodejs.org/) installed on your system before proceeding.
-
-1. Clone this repo
-```bash
-git clone https://github.com/nimone/Fashion-Store && cd Fashion-Store
-```
-2. Install project dependecies
-```bash
-cd ./api && npm install
-cd ./client && npm install
-```
-3. Start development servers (api & client) with the provided script `rundev.sh`
-```bash
-bash rundev.sh
-```
-> Or, start them manually by `npm run dev`
 # Urban-Threads-
