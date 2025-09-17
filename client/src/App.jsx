@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react'
+import { createContext, useEffect, useState, useCallback } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import ScrollToTop from "@/ScrollToTop"
 
@@ -16,6 +16,7 @@ import api from '@/api'
 import cartReducer, { initialCartState } from '@/reducers/cartReducer'
 import useReducerWithLocalStorage from '@/hooks/useReducerWithLocalStorage'
 import UserLayout from './layouts/UserLayout'
+import SplashScreen from '@/components/SplashScreen'
 
 export const UserContext = createContext()
 export const CartContext = createContext()
@@ -23,30 +24,59 @@ export const CartContext = createContext()
 export default function App() {
   const [user, setUser] = useState(null)
   const [cart, cartDispatch] = useReducerWithLocalStorage(cartReducer, initialCartState, "cart")
+  const [isLoading, setIsLoading] = useState(true)
   
-  useEffect(() => {
-    (async () => {
+  const fetchUserData = useCallback(async () => {
+    try {
       const resp = await api.fetchUserDetails()
-      console.log(resp)
-      if (resp.status == "ok") {
+      if (resp.status === "ok") {
         setUser(resp.user)
+        return resp.user
       }
-    })()
+      return null
+    } catch (error) {
+      console.error('Error fetching user data:', error)
+      return null
+    }
   }, [])
-
-  useEffect(() => {
-    if (!user) return
-    (async () => {
+  
+  const fetchCartData = useCallback(async (userData) => {
+    if (!userData) return
+    try {
       const resp = await api.getUserCart()
-      console.log(resp)
       if (resp.products) {
         cartDispatch({type: "SET_PRODUCTS", payload: resp.products})
       }
-    })()
-  }, [user])
+    } catch (error) {
+      console.error('Error fetching cart data:', error)
+    }
+  }, [])
+  
+  useEffect(() => {
+    const initializeApp = async () => {
+      try {
+        setIsLoading(true);
+        const userData = await fetchUserData();
+        await fetchCartData(userData);
+      } catch (error) {
+        console.error('Error initializing app:', error);
+      } finally {
+        // Add a small delay to ensure smooth transition
+        setTimeout(() => setIsLoading(false), 500);
+      }
+    };
+    
+    initializeApp();
+    
+    return () => {
+      // Cleanup if needed
+    };
+  }, [fetchUserData, fetchCartData]);
 
   return (
-    <BrowserRouter>      
+    <>
+      <SplashScreen isLoading={isLoading} />
+      <BrowserRouter>      
       <CartContext.Provider value={{cart, cartDispatch}}>
       <UserContext.Provider value={{user, setUser}}>
         <ScrollToTop />
@@ -77,5 +107,6 @@ export default function App() {
       </UserContext.Provider>
       </CartContext.Provider>
     </BrowserRouter>
+    </>
   );
 }
