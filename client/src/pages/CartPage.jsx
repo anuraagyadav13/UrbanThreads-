@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react'
-import { Link } from "react-router-dom"
+import React, { useContext, useState, useEffect } from 'react'
+import { Link, useNavigate } from "react-router-dom"
 import { ShoppingBag } from "react-feather"
 
 import { CartContext, UserContext } from "@/App"
@@ -11,9 +11,22 @@ import api from "@/api"
 import CheckoutModal from '../components/Checkout'
 
 export default function CartPage() {
+	const navigate = useNavigate();
 	const [showCheckoutModal, setShowCheckoutModal] = useState(false)
 	const {user} = useContext(UserContext)
 	const {cart, cartDispatch} = useContext(CartContext)
+
+	useEffect(() => {
+		// Redirect to login if not authenticated
+		if (!user) {
+			navigate('/login?redirect=' + encodeURIComponent('/cart'));
+		}
+	}, [user, navigate]);
+
+	// Show loading state while checking authentication
+	if (!user) {
+		return <div className="h-screen flex items-center justify-center">Loading...</div>;
+	}
 
 	const setProductQuantity = async (id, quantity) => {
 		if (quantity < 1) {

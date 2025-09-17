@@ -19,21 +19,24 @@ export default function ProductDetailsPage() {
 		(async () => {
 			const resp = await api.fetchProduct(id)
 			if (resp.status == "error") {
-				return history.replace("/404")
+				return navigate("/404")
 			}
 			setProduct(resp)
 		})()
 	}, [id])
 
   const addToCart = async (e, quantity=1) => {
-		if (user) {
-			const resp = await api.addProductsToCart([{productID: id, quantity}])
-			if (resp.status === "ok") {
-				cartDispatch({type: "ADD_PRODUCTS", payload: [{...product, quantity}]})
-			}
-    } else {
-			cartDispatch({type: "ADD_PRODUCTS", payload: [{...product, quantity}]})
-		}
+    if (!user) {
+      // Redirect to login page if user is not logged in
+      navigate('/login?redirect=' + encodeURIComponent(window.location.pathname));
+      return;
+    }
+    
+    // Only proceed if user is logged in
+    const resp = await api.addProductsToCart([{productID: id, quantity}]);
+    if (resp.status === "ok") {
+      cartDispatch({type: "ADD_PRODUCTS", payload: [{...product, quantity}]});
+    }
   }
 
 	if (!product) return <Loader /> 
