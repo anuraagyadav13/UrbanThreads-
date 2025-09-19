@@ -5,10 +5,11 @@ import clsx from "clsx"
 
 import Card from "./Card"
 
-export default function Product({ link, imgSrc, price, onAddToCart, isInCart }) {
+export default function Product({ link, imgSrc, images, price, onAddToCart, isInCart }) {
 	return (
 		<Card 
-			imgSrc={imgSrc} 
+			imgSrc={imgSrc}
+			images={images}
 			className={clsx(
 				"!max-w-80 !max-h-96",
 				"rounded-2xl m-3",

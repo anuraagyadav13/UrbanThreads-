@@ -1,7 +1,7 @@
 
 import React, { useContext, useEffect, useState } from 'react'
 import { Link, useParams, useNavigate } from "react-router-dom"
-import { Check, ChevronLeft, ShoppingCart } from "react-feather"
+import { Check, ChevronLeft, ShoppingCart, ChevronRight } from "react-feather"
 
 import Button from "@/components/Button"
 import Loader from "@/components/Loader"
@@ -14,6 +14,7 @@ export default function ProductDetailsPage() {
 	const navigate = useNavigate()
 	const { id } = useParams()
 	const [product, setProduct] = useState(null)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
 	useEffect(() => {
 		(async () => {
@@ -46,13 +47,65 @@ export default function ProductDetailsPage() {
 			<div className="container mx-auto px-6 py-12">
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 					<section className="relative group">
-						<div className="aspect-square rounded-3xl overflow-hidden bg-slate-100 dark:bg-slate-800 shadow-2xl">
-							<img 
-								className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-								src={product.image} 
-								alt={product.title}
-							/>
-						</div>
+						<div className="relative aspect-square rounded-3xl overflow-hidden bg-slate-100 dark:bg-slate-800 shadow-2xl">
+              {/* Main Image */}
+              <img 
+                className="w-full h-full object-cover transition-transform duration-500"
+                src={product.images?.[currentImageIndex] || product.image} 
+                alt={product.title}
+              />
+              
+              {/* Navigation Arrows */}
+              {(product.images?.length > 1 || (product.image && !product.images)) && (
+                <>
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const totalImages = product.images?.length || 1;
+                      setCurrentImageIndex((prev) => (prev - 1 + totalImages) % totalImages);
+                    }}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
+                    aria-label="Previous image"
+                  >
+                    <ChevronLeft size={24} />
+                  </button>
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const totalImages = product.images?.length || 1;
+                      setCurrentImageIndex((prev) => (prev + 1) % totalImages);
+                    }}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
+                    aria-label="Next image"
+                  >
+                    <ChevronRight size={24} />
+                  </button>
+                </>
+              )}
+              
+              {/* Thumbnails */}
+              <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+                {product.images?.map((img, index) => (
+                  <button
+                    key={index}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setCurrentImageIndex(index);
+                    }}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      index === currentImageIndex ? 'w-4 bg-white' : 'bg-white/50'
+                    }`}
+                    aria-label={`View image ${index + 1}`}
+                  />
+                ))}
+                {!product.images && product.image && (
+                  <button
+                    className={`w-2 h-2 rounded-full ${currentImageIndex === 0 ? 'w-4 bg-white' : 'bg-white/50'}`}
+                    aria-label="View image"
+                  />
+                )}
+              </div>
+            </div>
 					</section>
 					<section className="space-y-8">
 						<div className="space-y-4">
